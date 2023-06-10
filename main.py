@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class LinearNetwork():
     def __init__(self) -> None:
         self.linear_layer = LinearLayer(2, 1)
@@ -33,10 +34,9 @@ class LinearLayer():
         self.bias = bias
 
 
-
 if __name__ == "__main__":
     network = LinearNetwork()
     params = network.linear_layer.get_parameters()
-    input = np.array([[1,2]])
+    input = np.array([[1, 2]])
     output = network.forward(input)
     print(output)
