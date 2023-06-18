@@ -17,3 +17,6 @@ class Sequential():
         for layer in self.layers:
             parameters.append(layer.get_parameters())
         return parameters
+
+    def get_layers(self):
+        return self.layers

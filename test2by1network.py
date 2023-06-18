@@ -4,28 +4,20 @@ import numpy as np
 
 from linearlayer import LinearLayer
 from lossfunctions import MSE
-
-
-class LinearNetwork():
-    def __init__(self) -> None:
-        self.linear_layer = LinearLayer(2, 1)
-
-    def forward(self, x):
-        x = self.linear_layer(x)
-        return x
+from sequential import Sequential
 
 
 class Test2x1Network(unittest.TestCase):
     def __init__(self, methodName: str = "runTest") -> None:
         super().__init__(methodName)
-        self.network = LinearNetwork()
-        self.network.linear_layer.set_parameters(
+        self.network = Sequential([LinearLayer(2, 1)])
+        self.network.get_layers()[0].set_parameters(
             np.array([[1, 2]]), np.array([[1]]))
 
         self.loos_function = MSE()
 
 
-    def test_forward_pass_succeeds_for(self):
+    def test_forward_pass_succeeds(self):
         """
         We are performing one forward step and basically doing the calculation:
         y = x * w.T + b
@@ -38,7 +30,7 @@ class Test2x1Network(unittest.TestCase):
 
     def test_setting_parameters_of_wrong_shape_fails(self):
         with self.assertRaises(AssertionError):
-            self.network.linear_layer.set_parameters(
+            self.network.get_layers()[0].set_parameters(
                 np.array([[1]]), np.array([[1, 2]]))
 
     def backward_pass_calculates_correct_gradients(self):
@@ -47,7 +39,7 @@ class Test2x1Network(unittest.TestCase):
         output = self.network.forward(input)
         loss = self.loss_function(output, target)
         mse_derivative = self.loss_function.backward(output, target)
-        linear_gradient = self.network.linear_layer.backward(mse_derivative)
+        linear_gradient = self.network.backward(mse_derivative)
         self.assertTrue(np.array_equal(linear_gradient, np.array([[3, 3]])))
 
 if __name__ == "__main__":
