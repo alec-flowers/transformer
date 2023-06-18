@@ -10,7 +10,7 @@ class LinearLayer(Module):
         # self.weights = np.random.normal(0, 1, size=(input_neurons, output_neurons))
         # self.bias = np.random.normal(0, 1, size=(input_neurons, output_neurons))
         self.weights = np.ones((output_neurons, input_neurons))
-        self.bias = np.ones((output_neurons, 1))
+        self.bias = np.ones((output_neurons))
 
         self.gradient_weights = None
         self.gradient_bias = None
@@ -25,7 +25,7 @@ class LinearLayer(Module):
         return np.dot(x, self.weights.T) + self.bias
 
     def backward(self, previous_gradient):
-        self.gradient_weights = previous_gradient @ self.input_data
+        self.gradient_weights = previous_gradient * self.input_data
         self.gradient_bias = previous_gradient
         return previous_gradient @ self.weights
 
@@ -44,18 +44,15 @@ class LinearLayer(Module):
 
 if __name__ == "__main__":
     loss_function = MSE()
-    network = Sequential([LinearLayer(2, 1)])
-    # params = network.linear_layer.get_parameters()
-    input = np.array([[1, 2]])
+    network = Sequential([LinearLayer(1, 2), LinearLayer(2, 1)])
+
+    input = np.array([[1]])
     target = np.array([[1]])
     output = network.forward(input)
 
     loss = loss_function(output, target)
-    # Here I want a sequential instead?
     mse_derivative = loss_function.backward(output, target)
 
     linear_gradient = network.backward(mse_derivative)
-    # print(network.linear_layer.gradient_weights)
-    # print(network.linear_layer.gradient_bias)
     print(linear_gradient)
     print(output)
