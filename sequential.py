@@ -1,4 +1,7 @@
-class Sequential():
+from module import Module
+
+
+class Sequential(Module):
     def __init__(self, layers):
         self.layers = layers
 
