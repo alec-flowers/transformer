@@ -14,9 +14,6 @@ class Test2x1Network(unittest.TestCase):
         self.network.get_layers()[0].set_parameters(
             np.array([[1, 2]]), np.array([[1]]))
 
-        self.loos_function = MSE()
-
-
     def test_forward_pass_succeeds(self):
         """
         We are performing one forward step and basically doing the calculation:
@@ -41,6 +38,7 @@ class Test2x1Network(unittest.TestCase):
         mse_derivative = self.loss_function.backward(output, target)
         linear_gradient = self.network.backward(mse_derivative)
         self.assertTrue(np.array_equal(linear_gradient, np.array([[3, 3]])))
+
 
 if __name__ == "__main__":
     unittest.main()
